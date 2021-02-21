@@ -5,7 +5,10 @@ class BinaryTree:
     A binary tree
     :returns object whose root contains an empty Binary Node
     '''
-    right_index_set = set()
+    left_index_set1 = set()
+    right_index_set1 = set()
+    left_index_set2 = set()
+    right_index_set2 = set()
     height = 0
 
     def __init__(self):
@@ -26,35 +29,11 @@ class BinaryTree:
         :param index = initial index of array, should be 0 to get entire array
         :returns the root node of the binary tree
         '''
-        BinaryTree.createRightIndexSet()
         length = len(array)
-        
         if index < length:
             root = BinaryNode()
             root.data = array[index]
-            test_set = set()
-            test_set.add(index)
-            if(test_set.issubset(BinaryTree.right_index_set)):
-                root.right_buffer = -1
-            if(index == 0):
-                root.left_indent = ' ' * indent 
-            elif(index % 2 == 1):
-                # right node
-                test_set = set()
-                test_set.add(index)
-                if(test_set.issubset(BinaryTree.right_index_set)):
-                    root.left_indent = ' ' * indent
-                    
-                else:
-                    root.left_indent = ' ' * indent
-            elif(index % 2 == 0 ):
-                # left node
-                test_set = set()
-                test_set.add(index)
-                if(test_set.issubset(BinaryTree.right_index_set)):
-                    root.left_indent = ' ' * indent
-                else:
-                    root.left_indent = ' ' * (indent - index-1)
+    
                     
             
             root.left = BinaryTree.createLevelOrder(array,root.left, 2 * index + 1,indent)
@@ -139,9 +118,12 @@ class BinaryTree:
 
 
 
-    def createRightIndexSet():
+    def createIndexSet():
         while 2*BinaryTree.height-1 < 1000:
-            BinaryTree.right_index_set.add(2**BinaryTree.height - 1)
+            BinaryTree.left_index_set1.add(2*BinaryTree.height + 1)
+            BinaryTree.right_index_set1.add(2*BinaryTree.height + 2)
+            BinaryTree.left_index_set2.add(2**BinaryTree.height - 1)
+            BinaryTree.right_index_set2.add(2**BinaryTree.height)
             BinaryTree.height = BinaryTree.height + 1
             
 
