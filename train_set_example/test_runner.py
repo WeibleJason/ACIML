@@ -10,6 +10,19 @@ from DecisionTreeTrain import DecisionTreeTrain as DTTrain
 from DecisionTreeTrain import Node
 
 
+feature_dict = {}
+
+def value_is_no(x,test_point):
+    values = feature_dict.get(x)
+    if values is not None:
+        if values[test_point] == 'n' or values[test_point] == '-1' or values[test_point] == '-2':
+            return True
+        else:
+            return False
+    else:
+        return False
+
+
 def iOPrint(node):
         '''
         print a tree in order
@@ -21,12 +34,22 @@ def iOPrint(node):
             node.right.PrintTree()
 
 
+def DecisionTreeTest(tree,test_point):
+    if (tree.left == None and tree.right == None):
+        return tree.data
+    elif (tree.left != None or tree.right != None):
+        if (value_is_no(tree.data,test_point)):
+            return DecisionTreeTest(tree.left,test_point)
+        else:
+            return DecisionTreeTest(tree.right,test_point)
+
+
 data = load_csv('A Course in Machine Learning - Training Set - Sheet1.csv')
 data = np.asarray(data) # convert string matrix to ndarray
 feature_names = data[0,:] # extract feature names
 examples = np.delete(data,0,0) # remove first row with feature names
 # create dict of feature to example values
-feature_dict = {}
+
 i = 0
 while i < len(feature_names):
     feature_dict.update({feature_names[i]:examples[:,i]})
@@ -34,6 +57,9 @@ while i < len(feature_names):
 
 # Create decision tree
 root = DTTrain(examples,feature_dict)
-iOPrint(root)
+# iOPrint(root)
+result = DecisionTreeTest(root,1)
+
+
 
 
